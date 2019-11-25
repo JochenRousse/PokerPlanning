@@ -1,3 +1,3 @@
 # PokerPlanning
 
-Johann Carfantan
+Johann Carfantan, Jochen Rousse
