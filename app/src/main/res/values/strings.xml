@@ -1,5 +1,10 @@
 <resources>
     <string name="app_name">Poker Planning</string>
-    <string name="enter_name">Please enter your name :</string>
+    <string name="enter_name">Please enter your name:</string>
     <string name="done">Done</string>
+    <string name="create_new_room">Create new room</string>
+    <string name="create">Create</string>
+    <string name="room">room</string>
+    <string name="join">Or enter a room:</string>
+    <string name="refresh">Refresh</string>
 </resources>

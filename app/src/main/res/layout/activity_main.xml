@@ -35,7 +35,7 @@
             android:autofillHints="username"
             android:ems="10"
             android:inputType="textPersonName"
-            android:text="@={user.name}"
+            android:text="@{user.name}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView"
