@@ -1,3 +1,3 @@
 # PokerPlanning
 
-Johann Carfantan, Jochen Rousse
+Johann Carfantan, Jochen Rousse, Maël Ortiz
