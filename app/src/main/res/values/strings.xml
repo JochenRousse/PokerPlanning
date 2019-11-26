@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Poker Planning</string>
+    <string name="enter_name">Please enter your name :</string>
+    <string name="done">Done</string>
 </resources>
