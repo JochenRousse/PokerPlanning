@@ -7,4 +7,7 @@
     <string name="room">room</string>
     <string name="join">Or enter a room:</string>
     <string name="refresh">Refresh</string>
+    <string name="stop_vote">Stop vote</string>
+    <string name="ok">OK</string>
+    <string name="vote_results">Results of vote:</string>
 </resources>

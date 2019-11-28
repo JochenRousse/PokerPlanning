@@ -24,12 +24,12 @@ class MultiCastViewModel(context: Context): ViewModel() {
         super.onCleared()
     }
 
-    fun onReceiveRoom(msg: String) {
-        _roomSet.add(msg)
+    fun onReceiveRoom(room: String) {
+        _roomSet.add(room)
         _allrooms.postValue(_roomSet.toList())
     }
 
-    fun send(msg: String) {
-        _multicast.send(msg)
+    fun send(room: String) {
+        _multicast.send(room)
     }
 }

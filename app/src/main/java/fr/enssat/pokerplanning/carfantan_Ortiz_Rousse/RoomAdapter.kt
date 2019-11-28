@@ -9,13 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 
 
 class RoomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-    val msgView = view.findViewById<TextView>(R.id.msg)
+    val roomView = view.findViewById<TextView>(R.id.room)
 
-    fun setMessage(msg: String, listener: (String) -> Unit) {
-        msgView.text = msg
-        msgView.setOnClickListener {
+    fun setRoom(room: String, listener: (String) -> Unit) {
+        roomView.text = room
+        roomView.setOnClickListener {
             Log.d("DEBUG", "onItemClick")
-            listener(msg)
+            Log.d("DEBUG", room)
+            listener(room)
         }
     }
 }
@@ -39,6 +40,6 @@ class RoomAdapter(private val listener: (String) -> Unit) : RecyclerView.Adapter
     }
 
     override fun onBindViewHolder(holder: RoomViewHolder, position: Int) {
-        holder.setMessage(list[position], listener)
+        holder.setRoom(list[position], listener)
     }
 }
