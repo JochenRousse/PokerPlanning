@@ -1,10 +1,11 @@
 package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityRoomBinding
@@ -21,10 +22,8 @@ class RoomActivity : AppCompatActivity() {
             MultiCastViewModel::class.java
         )
 
-
         binding.createRoomButton.setOnClickListener {
-//            model.send(binding.roomEditText.text.toString())
-            startActivity(Intent(this, VoteActivity::class.java))
+            createRoom(model)
         }
 
         val adapter = RoomAdapter(this::connectToRoom)
@@ -41,5 +40,15 @@ class RoomActivity : AppCompatActivity() {
 
     fun connectToRoom(room: String) {
         Log.d("DEBUG-Activiy", room)
+    }
+
+    private fun createRoom(model: MultiCastViewModel) {
+        if (binding.roomEditText.text.toString().trim().isNotEmpty()) {
+            model.send(binding.roomEditText.text.toString())
+
+            startActivity(Intent(this, VoteActivity::class.java))
+        } else {
+            Toast.makeText(this, "Please enter a room name.", Toast.LENGTH_SHORT).show()
+        }
     }
 }

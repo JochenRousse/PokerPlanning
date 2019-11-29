@@ -1,10 +1,8 @@
 package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -32,8 +30,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (binding.textUsername.text.toString().trim().isNotEmpty()) {
-            val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            imm.hideSoftInputFromWindow(view.windowToken, 0)
+            val session = SessionManager(applicationContext)
+            session.updateUserSession("userName", userName.name)
+
             startActivity(Intent(this, RoomActivity::class.java))
         } else {
             Toast.makeText(this, "Please enter a name.", Toast.LENGTH_SHORT).show()

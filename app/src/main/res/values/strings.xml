@@ -10,4 +10,5 @@
     <string name="stop_vote">Stop vote</string>
     <string name="ok">OK</string>
     <string name="vote_results">Results of vote:</string>
+    <string name="your_vote">Your vote:</string>
 </resources>
