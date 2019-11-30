@@ -6,10 +6,10 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/user"
+        android:id="@+id/vote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        tools:text="Username" />
+        tools:text="Vote" />
 
 </LinearLayout>

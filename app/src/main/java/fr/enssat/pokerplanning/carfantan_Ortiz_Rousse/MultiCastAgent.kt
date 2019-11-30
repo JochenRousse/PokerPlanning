@@ -85,9 +85,9 @@ class MultiCastAgent(val listener: (String) -> Unit) {
     }
 
 
-    fun send(msg: String) {
+    fun send(room: String) {
         Executors.newSingleThreadExecutor().execute {
-            val data = msg.toByteArray(StandardCharsets.UTF_8)
+            val data = room.toByteArray(StandardCharsets.UTF_8)
             Log.d(TAG, "publishing on multicast: ${String(data)}")
             val packet = DatagramPacket(data, 0, data.size, MULTICAST_GROUP, PORT)
             socket.send(packet)

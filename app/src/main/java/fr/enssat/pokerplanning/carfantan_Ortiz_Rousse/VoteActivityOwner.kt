@@ -11,22 +11,20 @@ import androidx.lifecycle.ViewModelProviders
 import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityVoteBinding
 
 
-class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListener {
-
+class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogListener {
     private lateinit var binding: ActivityVoteBinding
-    private lateinit var model: ClientViewModel
+    private lateinit var model: ServerViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vote)
 
-        model = ViewModelProviders.of(this, ClientViewModelFactory(this))
-            .get(ClientViewModel::class.java)
-        model.connect("192.168.144.4", ServerSocket.PORT)
+        model = ViewModelProviders.of(this, ServerViewModelFactory(this))
+            .get(ServerViewModel::class.java)
 
         val adapter = MessageAdapter()
         binding.voteList.adapter = adapter
-        model.messages.observe(this, Observer { list ->
+        model.votes.observe(this, Observer { list ->
             adapter.list = list
         })
 
@@ -44,7 +42,6 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
         startActivity(intent)
         finishActivity(1)
     }
-
 
     private fun showNoticeDialog() {
         // Create an instance of the dialog fragment and show it
@@ -65,7 +62,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
             val votes = VotesMessage(room, liste)
             val json = Message.toJson(votes)
 
-            model.send(json)
+            model.onReceiveVote(json)
             binding.sendVoteFab.hide()
         } else {
             Toast.makeText(this, "Please select a voting option.", Toast.LENGTH_SHORT).show()

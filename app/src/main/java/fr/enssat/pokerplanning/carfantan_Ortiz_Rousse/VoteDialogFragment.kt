@@ -2,13 +2,11 @@ package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
 import android.app.Dialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import kotlinx.android.synthetic.main.dialog_vote.view.*
-import java.util.*
 
 
 class VoteDialogFragment : DialogFragment() {
@@ -53,24 +51,26 @@ class VoteDialogFragment : DialogFragment() {
             )
 
             for (i in 0 until 12) {
-                votesValue.get(i).setOnClickListener {
+                votesValue[i].setOnClickListener {
                     dialogView.currentVoteTextView.text = votesValue.get(i).text.toString()
                 }
             }
 
             builder.setView(dialogView)
-                .setPositiveButton("Vote",
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        listener.onDialogPositiveClick(
-                            this,
-                            dialogView.currentVoteTextView.text.toString()
-                        )
-                    })
-                .setNegativeButton("Cancel",
-                    DialogInterface.OnClickListener { dialog, _ ->
-                        listener.onDialogNegativeClick(this)
-                        getDialog()?.cancel()
-                    })
+                .setPositiveButton(
+                    "Vote"
+                ) { _, _ ->
+                    listener.onDialogPositiveClick(
+                        this,
+                        dialogView.currentVoteTextView.text.toString()
+                    )
+                }
+                .setNegativeButton(
+                    "Cancel"
+                ) { _, _ ->
+                    listener.onDialogNegativeClick(this)
+                    dialog?.cancel()
+                }
             builder.create()
         } ?: throw IllegalStateException("Activity cannot be null")
     }

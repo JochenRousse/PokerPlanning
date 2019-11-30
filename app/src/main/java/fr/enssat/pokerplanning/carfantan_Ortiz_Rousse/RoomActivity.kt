@@ -38,15 +38,23 @@ class RoomActivity : AppCompatActivity() {
         }
     }
 
-    fun connectToRoom(room: String) {
-        Log.d("DEBUG-Activiy", room)
+    private fun connectToRoom(room: String, owner: Boolean) {
+        val session = SessionManager(applicationContext)
+
+        session.updateUserSession("roomName", room)
+
+        if(owner){
+            startActivityForResult(Intent(this, VoteActivityOwner::class.java), 1)
+        } else {
+            startActivityForResult(Intent(this, VoteActivity::class.java), 1)
+        }
     }
 
     private fun createRoom(model: MultiCastViewModel) {
-        if (binding.roomEditText.text.toString().trim().isNotEmpty()) {
-            model.send(binding.roomEditText.text.toString())
-
-            startActivity(Intent(this, VoteActivity::class.java))
+        val room = binding.roomEditText.text.toString()
+        if (room.trim().isNotEmpty()) {
+            model.send(room)
+            connectToRoom(room, true)
         } else {
             Toast.makeText(this, "Please enter a room name.", Toast.LENGTH_SHORT).show()
         }

@@ -15,7 +15,7 @@ class MultiCastViewModel(context: Context): ViewModel() {
 
     init {
         MultiCastAgent.wifiLock(context)
-//        _multicast.startReceiveLoop()
+        _multicast.startReceiveLoop()
     }
 
     override fun onCleared() {

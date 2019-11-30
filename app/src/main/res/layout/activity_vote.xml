@@ -15,7 +15,7 @@
 
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/userList"
+            android:id="@+id/voteList"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="64dp"
@@ -24,7 +24,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            tools:listitem="@layout/list_item_user" />
+            tools:listitem="@layout/list_item_vote" />
 
         <Button
             android:id="@+id/stopVoteButton"
@@ -46,6 +46,5 @@
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
             app:srcCompat="@android:drawable/ic_dialog_email" />
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

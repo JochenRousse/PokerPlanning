@@ -1,6 +1,5 @@
 package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,17 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 class RoomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val roomView = view.findViewById<TextView>(R.id.room)
 
-    fun setRoom(room: String, listener: (String) -> Unit) {
+    fun setRoom(room: String, listener: (String, Boolean) -> Unit) {
         roomView.text = room
         roomView.setOnClickListener {
-            Log.d("DEBUG", "onItemClick")
-            Log.d("DEBUG", room)
-            listener(room)
+            listener(room, false)
         }
     }
 }
 
-class RoomAdapter(private val listener: (String) -> Unit) : RecyclerView.Adapter<RoomViewHolder>() {
+class RoomAdapter(private val listener: (String, Boolean) -> Unit) : RecyclerView.Adapter<RoomViewHolder>() {
 
     var list: List<String> = emptyList()
         set(l) {

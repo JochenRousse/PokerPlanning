@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
             session.updateUserSession("userName", userName.name)
 
             startActivity(Intent(this, RoomActivity::class.java))
+            finish()
         } else {
             Toast.makeText(this, "Please enter a name.", Toast.LENGTH_SHORT).show()
         }

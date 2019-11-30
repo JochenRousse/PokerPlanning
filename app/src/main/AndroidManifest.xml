@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse">
 
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
@@ -22,7 +23,7 @@
         </activity>
         <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.RoomActivity"></activity>
         <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.VoteActivity"></activity>
-        <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.ResultsActivity"></activity>
+        <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.VoteActivityOwner"></activity>
     </application>
 
 </manifest>
