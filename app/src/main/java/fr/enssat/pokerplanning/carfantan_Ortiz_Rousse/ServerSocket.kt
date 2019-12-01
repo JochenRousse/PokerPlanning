@@ -36,9 +36,13 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
             // écoute toutes les nouvelles demandes de connections clientes
             // et crée une socket locale au serveur, reply dédiée a ce nouveau client.
             Executors.newSingleThreadExecutor().execute {
-                while (loop) {
-                    val newSocket = serverSocket.accept()
-                    allClientsConnected.add(Reply(newSocket, listener))
+                try {
+                    while (loop) {
+                        val newSocket = serverSocket.accept()
+                        allClientsConnected.add(Reply(newSocket, listener))
+                    }
+                } catch (e: SocketException) {
+                    Log.d("TAG", "Server stopped")
                 }
             }
         } catch (e: UnknownHostException) {
@@ -81,7 +85,7 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
 
                             //répond avec message + adresse
                             val data =
-                                Message.toJson(SimpleMessage("Vote received, wait for results."))
+                                Message.toJson(SimpleMessage("Vote received."))
                                     .toByteArray(StandardCharsets.UTF_8)
                             socket.getOutputStream().write(data)
                             socket.getOutputStream().flush()

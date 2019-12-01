@@ -14,10 +14,20 @@ import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityVoteBi
 class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogListener {
     private lateinit var binding: ActivityVoteBinding
     private lateinit var model: ServerViewModel
+    lateinit var session: SessionManager
+    lateinit var user: HashMap<String, String?>
+    lateinit var username: String
+    lateinit var room: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_vote)
+
+        session = SessionManager(applicationContext)
+        user = session.userDetails
+        username = user["userName"].toString()
+        room = user["roomName"].toString()
+        setTitle("Vote: $room")
 
         model = ViewModelProviders.of(this, ServerViewModelFactory(this))
             .get(ServerViewModel::class.java)
@@ -40,6 +50,7 @@ class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogLi
     private fun stopVote() {
         val intent = Intent(this, RoomActivity::class.java)
         startActivity(intent)
+        viewModelStore.clear()
         finishActivity(1)
     }
 
@@ -51,11 +62,6 @@ class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogLi
 
     override fun onDialogPositiveClick(dialog: DialogFragment, vote: String) {
         if (vote.trim().isNotEmpty()) {
-            val session = SessionManager(applicationContext)
-            val user = session.userDetails
-            val username = user["userName"].toString()
-            val room = user["roomName"].toString()
-
             val liste = listOf(
                 Votant(username, vote.toInt())
             )
