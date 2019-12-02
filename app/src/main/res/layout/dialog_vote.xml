@@ -4,16 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
-        <variable
-            name="user"
-            type="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.User" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".MainActivity">
+        tools:context=".VoteActivity">
 
         <Button
             android:id="@+id/button1"

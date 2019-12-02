@@ -43,10 +43,10 @@ class RoomActivity : AppCompatActivity() {
 
         session.updateUserSession("roomName", room)
 
-        if(owner){
+        if (owner) {
             startActivityForResult(Intent(this, VoteActivityOwner::class.java), 1)
         } else {
-            startActivityForResult(Intent(this, VoteActivity::class.java), 1)
+            showNoticeDialog()
         }
     }
 
@@ -58,5 +58,25 @@ class RoomActivity : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Please enter a room name.", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun showNoticeDialog() {
+        // Create an instance of the dialog fragment and show it
+        val dialog = IPDialogFragment()
+        dialog.show(supportFragmentManager, "IPDialogFragment")
+    }
+
+    override fun onDialogPositiveClick(dialog: DialogFragment, ip: String) {
+        if (ip.trim().isNotEmpty()) {
+            val intent = Intent(this, VoteActivity::class.java)
+            intent.putExtra("ip", ip)
+            startActivityForResult(intent, 1)
+        } else {
+            Toast.makeText(this, "Please enter a valid IP address.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onDialogNegativeClick(dialog: DialogFragment) {
+        Toast.makeText(this, "Join cancelled.", Toast.LENGTH_SHORT).show()
     }
 }
