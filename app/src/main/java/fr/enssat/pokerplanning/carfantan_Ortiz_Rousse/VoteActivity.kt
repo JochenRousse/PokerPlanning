@@ -17,7 +17,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
     lateinit var session: SessionManager
     lateinit var user: HashMap<String, String?>
     lateinit var username: String
-    lateinit var room: String
+    lateinit var room: RoomMessage
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,8 +26,12 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
         session = SessionManager(applicationContext)
         user = session.userDetails
         username = user["userName"].toString()
-        room = user["roomName"].toString()
-        setTitle("Vote: $room")
+        val roomData = user["roomName"].toString()
+
+        val message = Message.fromJson(roomData)
+        room = message as RoomMessage
+
+        setTitle("Vote: ${room.name}")
 
         model = ViewModelProviders.of(this, ClientViewModelFactory(this))
             .get(ClientViewModel::class.java)
@@ -69,7 +73,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
             val liste = listOf(
                 Votant(username, vote.toInt())
             )
-            val votes = VotesMessage(room, liste)
+            val votes = VotesMessage(room.name, liste)
             val json = Message.toJson(votes)
 
             model.send(json)

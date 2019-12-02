@@ -3,6 +3,7 @@ package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 class RoomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val roomView = view.findViewById<TextView>(R.id.room)
     val ownerView = view.findViewById<TextView>(R.id.owner)
+    val layoutItemRoom = view.findViewById<LinearLayout>(R.id.layoutItemRoom)
 
     fun setRoom(data: String, listener: (String, Boolean) -> Unit) {
         val message = Message.fromJson(data)
@@ -17,7 +19,7 @@ class RoomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
         roomView.text = roomView.getContext().getString(R.string.roomname, room.name)
         ownerView.text = ownerView.getContext().getString(R.string.owner, room.owner)
-        roomView.setOnClickListener {
+        layoutItemRoom.setOnClickListener {
             listener(data, false)
         }
     }
