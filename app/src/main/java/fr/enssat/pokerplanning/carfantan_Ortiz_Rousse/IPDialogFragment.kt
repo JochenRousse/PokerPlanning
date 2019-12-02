@@ -3,17 +3,16 @@ package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
-import android.widget.Button
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
-import kotlinx.android.synthetic.main.dialog_vote.view.*
+import kotlinx.android.synthetic.main.dialog_ip.view.*
 
 
 class IPDialogFragment : DialogFragment() {
     private lateinit var listener: NoticeDialogListener
 
     interface NoticeDialogListener {
-        fun onDialogPositiveClick(dialog: DialogFragment, vote: String)
+        fun onDialogPositiveClick(dialog: DialogFragment, ip: String)
         fun onDialogNegativeClick(dialog: DialogFragment)
     }
 

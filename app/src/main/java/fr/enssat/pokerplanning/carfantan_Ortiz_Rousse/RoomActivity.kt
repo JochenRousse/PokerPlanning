@@ -2,16 +2,17 @@ package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
+import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityRoomBinding
 
 
-class RoomActivity : AppCompatActivity() {
+class RoomActivity : AppCompatActivity(), IPDialogFragment.NoticeDialogListener {
     private lateinit var binding: ActivityRoomBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,7 +68,7 @@ class RoomActivity : AppCompatActivity() {
     }
 
     override fun onDialogPositiveClick(dialog: DialogFragment, ip: String) {
-        if (ip.trim().isNotEmpty()) {
+        if (ip.trim().isNotEmpty() && Patterns.IP_ADDRESS.matcher(ip).matches()) {
             val intent = Intent(this, VoteActivity::class.java)
             intent.putExtra("ip", ip)
             startActivityForResult(intent, 1)

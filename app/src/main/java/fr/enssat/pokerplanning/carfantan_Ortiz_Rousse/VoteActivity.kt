@@ -31,7 +31,9 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
 
         model = ViewModelProviders.of(this, ClientViewModelFactory(this))
             .get(ClientViewModel::class.java)
-        model.connect("192.168.144.4", ServerSocket.PORT)
+
+        val ip = getIntent().getStringExtra("ip")
+        model.connect(ip, ServerSocket.PORT)
 
         val adapter = MessageAdapter()
         binding.voteList.adapter = adapter
