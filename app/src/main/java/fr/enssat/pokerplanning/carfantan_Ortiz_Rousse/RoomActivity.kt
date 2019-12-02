@@ -9,6 +9,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityRoomBinding
 
 
@@ -22,6 +23,10 @@ class RoomActivity : AppCompatActivity(), IPDialogFragment.NoticeDialogListener 
         val model = ViewModelProviders.of(this, MulticastViewModelFactory(this)).get(
             MultiCastViewModel::class.java
         )
+
+        val itemDecor = DividerItemDecoration(applicationContext, DividerItemDecoration.VERTICAL)
+        itemDecor.setDrawable(applicationContext.getResources().getDrawable(R.drawable.divider))
+        binding.roomList.addItemDecoration(itemDecor)
 
         binding.createRoomButton.setOnClickListener {
             createRoom(model)
@@ -54,7 +59,11 @@ class RoomActivity : AppCompatActivity(), IPDialogFragment.NoticeDialogListener 
     private fun createRoom(model: MultiCastViewModel) {
         val room = binding.roomEditText.text.toString()
         if (room.trim().isNotEmpty()) {
-            model.send(room)
+            val session = SessionManager(applicationContext)
+            val user = session.userDetails
+            val username = user["userName"].toString()
+            val data = RoomMessage(room, username)
+            model.send(data)
             connectToRoom(room, true)
         } else {
             Toast.makeText(this, "Please enter a room name.", Toast.LENGTH_SHORT).show()

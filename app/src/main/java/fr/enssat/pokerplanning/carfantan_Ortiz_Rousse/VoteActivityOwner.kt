@@ -32,6 +32,8 @@ class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogLi
         model = ViewModelProviders.of(this, ServerViewModelFactory(this))
             .get(ServerViewModel::class.java)
 
+        binding.ipServerTextView.text = "Server IP Address: " + NetworkUtils.getIpAddress(this) + ": ${ServerSocket.PORT}"
+
         val adapter = MessageAdapter()
         binding.voteList.adapter = adapter
         model.votes.observe(this, Observer { list ->

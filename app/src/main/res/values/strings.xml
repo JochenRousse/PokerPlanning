@@ -11,4 +11,6 @@
     <string name="ok">OK</string>
     <string name="vote_results">Results of vote:</string>
     <string name="your_vote">Your vote:</string>
+    <string name="roomname">Room: %1$s</string>
+    <string name="owner">Created by: %1$s</string>
 </resources>

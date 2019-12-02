@@ -9,16 +9,22 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RoomViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     val roomView = view.findViewById<TextView>(R.id.room)
+    val ownerView = view.findViewById<TextView>(R.id.owner)
 
-    fun setRoom(room: String, listener: (String, Boolean) -> Unit) {
-        roomView.text = room
+    fun setRoom(data: String, listener: (String, Boolean) -> Unit) {
+        val message = Message.fromJson(data)
+        val room = message as RoomMessage
+
+        roomView.text = roomView.getContext().getString(R.string.roomname, room.name)
+        ownerView.text = ownerView.getContext().getString(R.string.owner, room.owner)
         roomView.setOnClickListener {
-            listener(room, false)
+            listener(data, false)
         }
     }
 }
 
-class RoomAdapter(private val listener: (String, Boolean) -> Unit) : RecyclerView.Adapter<RoomViewHolder>() {
+class RoomAdapter(private val listener: (String, Boolean) -> Unit) :
+    RecyclerView.Adapter<RoomViewHolder>() {
 
     var list: List<String> = emptyList()
         set(l) {

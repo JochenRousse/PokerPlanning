@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
-class MultiCastViewModel(context: Context): ViewModel() {
+class MultiCastViewModel(context: Context) : ViewModel() {
 
     private val _roomSet = mutableSetOf<String>()
     private val _allrooms = MutableLiveData<List<String>>()
@@ -29,7 +29,7 @@ class MultiCastViewModel(context: Context): ViewModel() {
         _allrooms.postValue(_roomSet.toList())
     }
 
-    fun send(room: String) {
+    fun send(room: RoomMessage) {
         _multicast.send(room)
     }
 }

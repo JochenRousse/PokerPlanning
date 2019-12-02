@@ -8,9 +8,11 @@ import android.util.Log
 import java.net.DatagramPacket
 import java.net.InetAddress
 import java.net.MulticastSocket
+import java.net.SocketException
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.Executor
 import java.util.concurrent.Executors
+
 
 class MultiCastAgent(val listener: (String) -> Unit) {
 
@@ -66,10 +68,15 @@ class MultiCastAgent(val listener: (String) -> Unit) {
     }
 
     private fun receive(): String {
-        val packet = DatagramPacket(ByteArray(MAX_SIZE_MESSAGE), MAX_SIZE_MESSAGE)
-        Log.d(TAG, "waiting for multicast datagram")
-        socket.receive(packet)
-        return String(packet.data, 0, packet.length, StandardCharsets.UTF_8)
+        return try {
+            val packet = DatagramPacket(ByteArray(MAX_SIZE_MESSAGE), MAX_SIZE_MESSAGE)
+            Log.d(TAG, "waiting for multicast datagram")
+            socket.receive(packet)
+
+            String(packet.data, 0, packet.length, StandardCharsets.UTF_8)
+        } catch (e: SocketException) {
+            "Server stopped"
+        }
     }
 
 
@@ -85,9 +92,10 @@ class MultiCastAgent(val listener: (String) -> Unit) {
     }
 
 
-    fun send(room: String) {
+    fun send(room: RoomMessage) {
         Executors.newSingleThreadExecutor().execute {
-            val data = room.toByteArray(StandardCharsets.UTF_8)
+            val roomJson = Message.toJson(room)
+            val data = roomJson.toByteArray(StandardCharsets.UTF_8)
             Log.d(TAG, "publishing on multicast: ${String(data)}")
             val packet = DatagramPacket(data, 0, data.size, MULTICAST_GROUP, PORT)
             socket.send(packet)
