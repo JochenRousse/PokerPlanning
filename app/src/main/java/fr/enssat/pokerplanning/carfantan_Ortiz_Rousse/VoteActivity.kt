@@ -26,9 +26,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
         session = SessionManager(applicationContext)
         user = session.userDetails
         username = user["userName"].toString()
-        val roomData = user["roomName"].toString()
-
-        val message = Message.fromJson(roomData)
+        val message = Message.fromJson(user["room"].toString())
         room = message as RoomMessage
 
         setTitle("Vote: ${room.name}")
@@ -36,8 +34,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
         model = ViewModelProviders.of(this, ClientViewModelFactory(this))
             .get(ClientViewModel::class.java)
 
-        val ip = getIntent().getStringExtra("ip")
-        model.connect(ip, ServerSocket.PORT)
+        model.connect(room.ip.toString(), ServerSocket.PORT)
 
         val adapter = MessageAdapter()
         binding.voteList.adapter = adapter
@@ -61,7 +58,6 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
         finishActivity(1)
     }
 
-
     private fun showNoticeDialog() {
         // Create an instance of the dialog fragment and show it
         val dialog = VoteDialogFragment()
@@ -73,7 +69,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
             val liste = listOf(
                 Votant(username, vote.toInt())
             )
-            val votes = VotesMessage(room.name, liste)
+            val votes = VotesMessage(room.id, liste)
             val json = Message.toJson(votes)
 
             model.send(json)

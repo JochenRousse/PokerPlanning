@@ -26,15 +26,15 @@ class ServerViewModel(private val context: Context) : ViewModel() {
     fun onReceiveVote(msg: String) {
         val session = SessionManager(context)
         val user = session.userDetails
-        val room = user["roomName"].toString()
+        val msgRoom = Message.fromJson(user["room"].toString())
+        val room = msgRoom as RoomMessage
 
         val message = Message.fromJson(msg)
         val msg = message as VotesMessage
 
-        if (msg.msg == room) {
+        if (msg.roomId == room.id) {
             _voteSet.add(msg.liste[0].name + " : " + msg.liste[0].note)
             _allVotes.postValue(_voteSet.toList())
         }
     }
-
 }

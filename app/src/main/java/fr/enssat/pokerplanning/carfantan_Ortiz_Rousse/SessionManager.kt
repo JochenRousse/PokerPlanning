@@ -21,7 +21,7 @@ class SessionManager(
     fun updateUserSession(key: String, value: String) {
         when (key) {
             KEY_USERNAME -> editor.putString(KEY_USERNAME, value)
-            KEY_ROOMNAME -> editor.putString(KEY_ROOMNAME, value)
+            KEY_ROOM -> editor.putString(KEY_ROOM, value)
             else -> {
             }
         }
@@ -32,13 +32,13 @@ class SessionManager(
         get() {
             val user = HashMap<String, String?>()
             user["userName"] = sharedPrefer.getString(KEY_USERNAME, null)
-            user["roomName"] = sharedPrefer.getString(KEY_ROOMNAME, null)
+            user["room"] = sharedPrefer.getString(KEY_ROOM, null)
             return user
         }
 
     companion object {
         private const val PREF_NAME = "UserSession"
         private const val KEY_USERNAME = "userName"
-        private const val KEY_ROOMNAME = "roomName"
+        private const val KEY_ROOM = "room"
     }
 }

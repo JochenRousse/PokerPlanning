@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityRoomBinding
 
 
-class RoomActivity : AppCompatActivity(), IPDialogFragment.NoticeDialogListener {
+class RoomActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRoomBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -46,13 +46,12 @@ class RoomActivity : AppCompatActivity(), IPDialogFragment.NoticeDialogListener 
 
     private fun connectToRoom(room: String, owner: Boolean) {
         val session = SessionManager(applicationContext)
-
-        session.updateUserSession("roomName", room)
+        session.updateUserSession("room", room)
 
         if (owner) {
             startActivityForResult(Intent(this, VoteActivityOwner::class.java), 1)
         } else {
-            showNoticeDialog()
+            startActivityForResult(Intent(this, VoteActivity::class.java), 1)
         }
     }
 
@@ -62,31 +61,19 @@ class RoomActivity : AppCompatActivity(), IPDialogFragment.NoticeDialogListener 
             val session = SessionManager(applicationContext)
             val user = session.userDetails
             val username = user["userName"].toString()
-            val data = RoomMessage(room, username)
-            model.send(data)
-            connectToRoom(room, true)
+
+            val data = RoomMessage(
+                room,
+                username,
+                NetworkUtils.getIpAddress(this),
+                java.util.UUID.randomUUID().toString()
+            )
+            val roomJson = Message.toJson(data)
+
+            model.send(roomJson)
+            connectToRoom(roomJson, true)
         } else {
             Toast.makeText(this, "Please enter a room name.", Toast.LENGTH_SHORT).show()
         }
-    }
-
-    private fun showNoticeDialog() {
-        // Create an instance of the dialog fragment and show it
-        val dialog = IPDialogFragment()
-        dialog.show(supportFragmentManager, "IPDialogFragment")
-    }
-
-    override fun onDialogPositiveClick(dialog: DialogFragment, ip: String) {
-        if (ip.trim().isNotEmpty() && Patterns.IP_ADDRESS.matcher(ip).matches()) {
-            val intent = Intent(this, VoteActivity::class.java)
-            intent.putExtra("ip", ip)
-            startActivityForResult(intent, 1)
-        } else {
-            Toast.makeText(this, "Please enter a valid IP address.", Toast.LENGTH_SHORT).show()
-        }
-    }
-
-    override fun onDialogNegativeClick(dialog: DialogFragment) {
-        Toast.makeText(this, "Join cancelled.", Toast.LENGTH_SHORT).show()
     }
 }
