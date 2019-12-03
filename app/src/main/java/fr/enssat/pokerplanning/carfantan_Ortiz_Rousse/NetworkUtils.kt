@@ -23,7 +23,6 @@ class NetworkUtils {
                 result = address?.address
             }
             else {
-
                 val wm = context.getSystemService(WIFI_SERVICE) as WifiManager
                 val ip = Formatter.formatIpAddress(wm.connectionInfo.ipAddress)
                 result = InetAddress.getByName(ip)

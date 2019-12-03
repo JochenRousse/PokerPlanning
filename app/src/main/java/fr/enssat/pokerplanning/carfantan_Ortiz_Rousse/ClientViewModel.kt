@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 
 class ClientViewModel(context: Context): ViewModel() {
 
-    private val _client = ClientSocket(context, this::onReceiveMessage)
+    private val _client = ClientSocket(context, this::onReceiveMessage, this::onStopVote)
 
     private val _msgSet = mutableSetOf<String>()
     private val _allMessages = MutableLiveData<List<String>>()
@@ -25,6 +25,11 @@ class ClientViewModel(context: Context): ViewModel() {
 
         _msgSet.add(msg.msg)
         _allMessages.postValue(_msgSet.toList())
+    }
+
+    fun onStopVote(resultsString: String){
+        val message = Message.fromJson(resultsString)
+        val results = message as VotesMessage
     }
 
     fun connect(serverIp:String, serverPort:Int?){

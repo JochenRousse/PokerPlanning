@@ -14,6 +14,7 @@ import fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.databinding.ActivityVoteBi
 class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogListener {
     private lateinit var binding: ActivityVoteBinding
     private lateinit var model: ServerViewModel
+    private lateinit var modelClient: ClientViewModel
     lateinit var session: SessionManager
     lateinit var user: HashMap<String, String?>
     lateinit var username: String
@@ -40,6 +41,11 @@ class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogLi
             adapter.list = list
         })
 
+        modelClient = ViewModelProviders.of(this, ClientViewModelFactory(this))
+            .get(ClientViewModel::class.java)
+
+        modelClient.connect(room.ip, ServerSocket.PORT)
+
         binding.sendVoteFab.setOnClickListener {
             showNoticeDialog()
         }
@@ -50,6 +56,7 @@ class VoteActivityOwner : AppCompatActivity(), VoteDialogFragment.NoticeDialogLi
     }
 
     private fun stopVote() {
+        model.stopVote()
         val intent = Intent(this, RoomActivity::class.java)
         startActivity(intent)
         viewModelStore.clear()

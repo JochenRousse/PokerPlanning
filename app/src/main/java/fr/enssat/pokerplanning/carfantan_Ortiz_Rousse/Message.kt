@@ -5,7 +5,6 @@ import com.google.gson.JsonDeserializationContext
 import com.google.gson.JsonDeserializer
 import com.google.gson.JsonElement
 import java.lang.reflect.Type
-import java.net.InetAddress
 
 sealed class Message constructor(val type: String) {
     companion object {
@@ -16,11 +15,11 @@ sealed class Message constructor(val type: String) {
 }
     class UnknownMessage : Message("unknown")
 
-    class VotesMessage(val roomId: String, val liste: List<Votant>): Message("votes")
+    class VotesMessage(val roomId: String, var liste: List<Votant>): Message("votes")
 
     class SimpleMessage(val msg: String): Message("simple")
 
-    class RoomMessage(val name: String, val owner: String, val ip: InetAddress?, val id: String): Message("room")
+    class RoomMessage(val name: String, val owner: String, val ip: String, val id: String): Message("room")
 
     data class Votant(val name: String, val note: Int)
 

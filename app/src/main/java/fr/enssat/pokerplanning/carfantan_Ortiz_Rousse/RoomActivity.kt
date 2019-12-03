@@ -2,11 +2,9 @@ package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -62,10 +60,12 @@ class RoomActivity : AppCompatActivity() {
             val user = session.userDetails
             val username = user["userName"].toString()
 
+            val cleanIp = NetworkUtils.getIpAddress(this).toString().replace("/", "")
+
             val data = RoomMessage(
                 room,
                 username,
-                NetworkUtils.getIpAddress(this),
+                cleanIp,
                 java.util.UUID.randomUUID().toString()
             )
             val roomJson = Message.toJson(data)

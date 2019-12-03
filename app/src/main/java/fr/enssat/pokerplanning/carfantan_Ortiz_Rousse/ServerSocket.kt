@@ -58,6 +58,12 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
         serverSocket.close()
     }
 
+    fun stopVote(message: String, code: Int) {
+        allClientsConnected.forEach {
+            it.sendStopMessage(message, code)
+        }
+    }
+
 
     class Reply(val socket: Socket, val listener: (String) -> Unit) {
         private val TAG = this.javaClass.simpleName
@@ -83,7 +89,11 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
                             //affiche le message reçu dans l'ui
                             mainThread.execute { listener(msg) }
 
-                            //répond avec message + adresse
+                            val messageType = "1".toByteArray(StandardCharsets.UTF_8)
+                            socket.getOutputStream().write(messageType)
+                            socket.getOutputStream().flush()
+
+                            //répond avec message
                             val data =
                                 Message.toJson(SimpleMessage("Vote received."))
                                     .toByteArray(StandardCharsets.UTF_8)
@@ -101,6 +111,23 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
         fun stop() {
             loop = false
             socket.close()
+        }
+
+        fun sendStopMessage(message: String, code: Int) {
+            Executors.newSingleThreadExecutor().execute {
+                try {
+                    val messageType = if(code == 1) "1".toByteArray(StandardCharsets.UTF_8) else "2".toByteArray(StandardCharsets.UTF_8)
+                    socket.getOutputStream().write(messageType)
+                    socket.getOutputStream().flush()
+
+                    //répond avec message
+                    val data = message.toByteArray(StandardCharsets.UTF_8)
+                    socket.getOutputStream().write(data)
+                    socket.getOutputStream().flush()
+                } catch (e: IOException) {
+                    Log.d(TAG, "Client $address down")
+                }
+            }
         }
     }
 }

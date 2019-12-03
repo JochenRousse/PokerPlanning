@@ -11,6 +11,7 @@ class ServerViewModel(private val context: Context) : ViewModel() {
 
     private val _voteSet = mutableSetOf<String>()
     private val _allVotes = MutableLiveData<List<String>>()
+    private lateinit var _results: VotesMessage
 
     val votes: LiveData<List<String>> get() = _allVotes
 
@@ -23,6 +24,14 @@ class ServerViewModel(private val context: Context) : ViewModel() {
         super.onCleared()
     }
 
+    fun stopVote() {
+        if (!::_results.isInitialized) {
+            _server.stopVote(Message.toJson(SimpleMessage("Nobody voted.")), 1)
+        } else {
+            _server.stopVote(Message.toJson(_results), 2)
+        }
+    }
+
     fun onReceiveVote(msg: String) {
         val session = SessionManager(context)
         val user = session.userDetails
@@ -31,6 +40,12 @@ class ServerViewModel(private val context: Context) : ViewModel() {
 
         val message = Message.fromJson(msg)
         val msg = message as VotesMessage
+
+        if (!::_results.isInitialized) {
+            _results = VotesMessage(msg.roomId, msg.liste)
+        } else {
+            _results.liste += msg.liste
+        }
 
         if (msg.roomId == room.id) {
             _voteSet.add(msg.liste[0].name + " : " + msg.liste[0].note)
