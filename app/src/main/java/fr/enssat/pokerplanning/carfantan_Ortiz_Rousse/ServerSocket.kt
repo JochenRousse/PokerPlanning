@@ -95,7 +95,7 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
 
                             //répond avec message
                             val data =
-                                Message.toJson(SimpleMessage("Vote received."))
+                                Message.toJson(SimpleMessage("Vote received, wait for results."))
                                     .toByteArray(StandardCharsets.UTF_8)
                             socket.getOutputStream().write(data)
                             socket.getOutputStream().flush()
@@ -116,7 +116,7 @@ class ServerSocket(val context: Context, val listener: (String) -> Unit) {
         fun sendStopMessage(message: String, code: Int) {
             Executors.newSingleThreadExecutor().execute {
                 try {
-                    val messageType = if(code == 1) "1".toByteArray(StandardCharsets.UTF_8) else "2".toByteArray(StandardCharsets.UTF_8)
+                    val messageType = if(code == 1) "1".toByteArray(StandardCharsets.UTF_8) else if(code == 2) "2".toByteArray(StandardCharsets.UTF_8) else "3".toByteArray(StandardCharsets.UTF_8)
                     socket.getOutputStream().write(messageType)
                     socket.getOutputStream().flush()
 

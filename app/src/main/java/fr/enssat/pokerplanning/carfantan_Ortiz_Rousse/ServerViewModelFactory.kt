@@ -1,14 +1,14 @@
 package fr.enssat.pokerplanning.carfantan_Ortiz_Rousse
 
-import android.content.Context
+import android.app.Activity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 
-class ServerViewModelFactory(val context: Context): ViewModelProvider.Factory {
+class ServerViewModelFactory(private val activity: Activity): ViewModelProvider.Factory {
 
-    //factory crée afin de parvenir à passer un parameter en argument ici le context au view model...
+    //factory crée afin de parvenir à passer un parameter en argument ici l'activity au view model...
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-        return ServerViewModel(context.applicationContext) as T
+        return ServerViewModel(activity) as T
     }
 
 }

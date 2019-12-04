@@ -13,4 +13,7 @@
     <string name="your_vote">Your vote:</string>
     <string name="roomname">Room: %1$s</string>
     <string name="owner">Created by: %1$s</string>
+    <string name="note">Note: %1$d</string>
+    <string name="voter">By: %1$s</string>
+    <string name="voted">%1$s voted.</string>
 </resources>

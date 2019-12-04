@@ -15,7 +15,8 @@ import java.util.concurrent.Executors
 class ClientSocket(
     val context: Context,
     val messageListener: (String) -> Unit,
-    val resultListener: (String) -> Unit
+    val resultListener: (String) -> Unit,
+    val cancelListener: () -> Unit
 ) {
     private val TAG = this.javaClass.simpleName
 
@@ -49,7 +50,7 @@ class ClientSocket(
         }
     }
 
-    fun sendAndReceive(msg: String) {
+    fun send(msg: String) {
         Executors.newSingleThreadExecutor().execute {
             try {
                 val data = msg.toByteArray(StandardCharsets.UTF_8)
@@ -63,24 +64,28 @@ class ClientSocket(
         }
     }
 
-    fun receive() {
+    private fun receive() {
         Executors.newSingleThreadExecutor().execute {
             try {
                 while (loop) {
                     val buffer1 = ByteArray(1)
                     val len1 = socket.getInputStream().read(buffer1)
-                    val messageType = String(buffer1, 0, len1, StandardCharsets.UTF_8)
+                    if(len1 > -1){
+                        val messageType = String(buffer1, 0, len1, StandardCharsets.UTF_8)
 
-                    val buffer = ByteArray(2048)
-                    val len = socket.getInputStream().read(buffer)
-                    val str = String(buffer, 0, len, StandardCharsets.UTF_8)
+                        val buffer = ByteArray(2048)
+                        val len = socket.getInputStream().read(buffer)
+                        val str = String(buffer, 0, len, StandardCharsets.UTF_8)
 
-                    if (messageType == "1") {
-                        //affiche le message reçu dans l'ui
-                        mainThread.execute { messageListener(str) }
-                    } else if (messageType == "2") {
-                        //fin du vote
-                        mainThread.execute { resultListener(str) }
+                        if (messageType == "1") {
+                            //affiche le message reçu dans l'ui
+                            mainThread.execute { messageListener(str) }
+                        } else if (messageType == "2") {
+                            //fin du vote
+                            mainThread.execute { resultListener(str) }
+                        } else if (messageType == "3"){
+                            mainThread.execute { cancelListener() }
+                        }
                     }
                 }
             } catch (e: IOException) {

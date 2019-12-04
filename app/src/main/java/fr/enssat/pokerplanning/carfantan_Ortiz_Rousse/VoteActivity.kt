@@ -46,6 +46,8 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
             showNoticeDialog()
         }
 
+        binding.stopVoteButton.text = "Quit vote"
+
         binding.stopVoteButton.setOnClickListener {
             stopVote()
         }
@@ -55,7 +57,7 @@ class VoteActivity : AppCompatActivity(), VoteDialogFragment.NoticeDialogListene
         val intent = Intent(this, RoomActivity::class.java)
         startActivity(intent)
         viewModelStore.clear()
-        finishActivity(1)
+        finish()
     }
 
     private fun showNoticeDialog() {

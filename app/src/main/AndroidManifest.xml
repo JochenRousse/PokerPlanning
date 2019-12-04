@@ -24,6 +24,7 @@
         <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.RoomActivity"></activity>
         <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.VoteActivity"></activity>
         <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.VoteActivityOwner"></activity>
+        <activity android:name="fr.enssat.pokerplanning.carfantan_Ortiz_Rousse.ResultActivity"></activity>
     </application>
 
 </manifest>

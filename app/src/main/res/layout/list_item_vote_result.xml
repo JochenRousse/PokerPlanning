@@ -6,11 +6,18 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/vote"
+        android:id="@+id/voteResult"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textSize="24sp"
-        tools:text="Vote" />
+        tools:text="@string/note" />
 
+    <TextView
+        android:id="@+id/voter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textSize="16sp"
+        tools:text="@string/voter" />
 </LinearLayout>

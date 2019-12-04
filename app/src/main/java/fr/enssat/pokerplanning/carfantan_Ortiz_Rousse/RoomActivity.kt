@@ -47,10 +47,11 @@ class RoomActivity : AppCompatActivity() {
         session.updateUserSession("room", room)
 
         if (owner) {
-            startActivityForResult(Intent(this, VoteActivityOwner::class.java), 1)
+            startActivity(Intent(this, VoteActivityOwner::class.java))
         } else {
-            startActivityForResult(Intent(this, VoteActivity::class.java), 1)
+            startActivity(Intent(this, VoteActivity::class.java))
         }
+        finish()
     }
 
     private fun createRoom(model: MultiCastViewModel) {
