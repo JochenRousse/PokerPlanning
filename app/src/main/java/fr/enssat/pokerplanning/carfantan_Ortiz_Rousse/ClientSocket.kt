@@ -16,7 +16,7 @@ class ClientSocket(
     val context: Context,
     val messageListener: (String) -> Unit,
     val resultListener: (String) -> Unit,
-    val cancelListener: () -> Unit
+    val cancelListener: (String) -> Unit
 ) {
     private val TAG = this.javaClass.simpleName
 
@@ -32,7 +32,9 @@ class ClientSocket(
 
     fun stop() {
         loop = false
-        socket.close()
+        if (::socket.isInitialized) {
+            socket.close()
+        }
     }
 
     fun connect(serverIp: String, serverPort: Int?) {
@@ -53,9 +55,13 @@ class ClientSocket(
     fun send(msg: String) {
         Executors.newSingleThreadExecutor().execute {
             try {
-                val data = msg.toByteArray(StandardCharsets.UTF_8)
-                socket.getOutputStream().write(data)
-                socket.getOutputStream().flush()
+                if (::socket.isInitialized) {
+                    val data = msg.toByteArray(StandardCharsets.UTF_8)
+                    socket.getOutputStream().write(data)
+                    socket.getOutputStream().flush()
+                } else {
+                    mainThread.execute { cancelListener("This room does not exist anymore") }
+                }
             } catch (e: IOException) {
                 val msg = e.message ?: "unable to send to or receive from server"
                 Log.d(TAG, msg)
@@ -70,7 +76,7 @@ class ClientSocket(
                 while (loop) {
                     val buffer1 = ByteArray(1)
                     val len1 = socket.getInputStream().read(buffer1)
-                    if(len1 > -1){
+                    if (len1 > -1) {
                         val messageType = String(buffer1, 0, len1, StandardCharsets.UTF_8)
 
                         val buffer = ByteArray(2048)
@@ -83,8 +89,8 @@ class ClientSocket(
                         } else if (messageType == "2") {
                             //fin du vote
                             mainThread.execute { resultListener(str) }
-                        } else if (messageType == "3"){
-                            mainThread.execute { cancelListener() }
+                        } else if (messageType == "3") {
+                            mainThread.execute { cancelListener("Vote cancelled") }
                         }
                     }
                 }

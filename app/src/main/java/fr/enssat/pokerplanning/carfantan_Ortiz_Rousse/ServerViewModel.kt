@@ -48,13 +48,13 @@ class ServerViewModel(private val activity: Activity) : ViewModel() {
         val message = Message.fromJson(msg)
         val votesMessage = message as VotesMessage
 
-        if (!::_results.isInitialized) {
-            _results = votesMessage
-        } else {
-            _results.liste += votesMessage.liste
-        }
-
         if (votesMessage.roomId == room.id) {
+            if (!::_results.isInitialized) {
+                _results = votesMessage
+            } else {
+                _results.liste += votesMessage.liste
+            }
+
             _voteSet.add(votesMessage.liste[0].name + " voted.")
             _allVotes.postValue(_voteSet.toList())
         }

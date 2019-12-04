@@ -39,10 +39,10 @@ class ClientViewModel(private val activity: Activity) : ViewModel() {
         onCleared()
     }
 
-    private fun onCancelVote() {
+    private fun onCancelVote(msg: String) {
         val intent = Intent(activity, RoomActivity::class.java)
         activity.startActivity(intent)
-        Toast.makeText(activity, "Vote cancelled", Toast.LENGTH_LONG).show()
+        Toast.makeText(activity, msg, Toast.LENGTH_LONG).show()
         activity.finish()
         onCleared()
     }
